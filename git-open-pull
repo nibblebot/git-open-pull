@@ -159,7 +159,7 @@ GIT_EDITOR=`$GIT_CMD config --get core.editor`
 if [ -z "$GIT_EDITOR" ]; then
   GIT_EDITOR=${EDITOR:-vi}
 fi
-  
+
 FEATURE_BRANCH=`$GIT_CMD rev-parse --abbrev-ref HEAD`
 ISSUE_NUMBER=`echo $FEATURE_BRANCH | perl -p -e 's/.*[-_]([0-9]+)$/\1/'`
 if [ "$ISSUE_NUMBER" == "$FEATURE_BRANCH" ]; then
@@ -302,6 +302,21 @@ if [ -z "$ISSUE_NUMBER" ]; then
 
         echo "
 
+# note: reviewers must add their @handle to claim the review
+# all review checkboxes must be checked BEFORE MERGE
+#
+# **Review**
+# - [ ] Code Review
+# - [ ] Code Signoff
+# - [ ] Design Verify of screenshot
+# - [ ] Design Verify on staging
+# - [ ] QA Verify on staging
+#
+# **Deploy**
+# - [ ] Deploy to web.del
+#
+# **Rollback**
+# - [ ] Deploy SHA to web.del
 " > "$TMPFILE"
 
         endpoint="https://api.github.com/repos/$BASE_ACCOUNT/$BASE_REPO/labels"
@@ -342,7 +357,7 @@ if [ -z "$ISSUE_NUMBER" ]; then
         fi
 
         echo "created issue $ISSUE_NUMBER"
-        
+
         if [ -n "$SELECTED_LABELS" ]; then
             endpoint="https://api.github.com/repos/$BASE_ACCOUNT/$BASE_REPO/issues/$ISSUE_NUMBER/labels"
             LABEL_CHANGE_JSON=`curl --silent -H "Accept: application/json" --data-binary "$SELECTED_LABELS" "$endpoint?access_token=$GITHUB_TOKEN"`
