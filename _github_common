@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PYTHON_CMD=${PYTHON_CMD:-$(which python)}
+if [ -z "$PYTHON_CMD" ] || ! $PYTHON_CMD --version >/dev/null 2>&1 ; then
+    echo "unable to find 'python' command"
+    exit 1
+fi
+GIT_CMD=${GIT_CMD:-$(which git)}
+if [ -z "$GIT_CMD" ] || ! $GIT_CMD --version >/dev/null 2>&1 ; then
+    echo "unable to find 'git' command"
+    exit 1
+fi

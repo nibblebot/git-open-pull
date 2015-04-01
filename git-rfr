@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# git-rfr
+# Copyright 2011 Jehiah Czebotar <jehiah@gmail.com>
+# Copyright 2015 Joshua Hanson <nibblebot@gmail.com>
+# http://github.com/jehiah/git-open-pull
+
+## This program is free software: you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or (at
+## your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You can find the GNU General Public License at:
+## http://www.gnu.org/licenses/
+
+# note: reviewers must add their @handle to claim the review
+# all review checkboxes must be checked BEFORE MERGE
+#
+# **Review**
+# - [ ] Code Review
+# - [ ] Code Signoff
+# - [ ] Design Verify of screenshot
+# - [ ] Design Verify on staging
+# - [ ] QA Verify on staging
+#
+# **Deploy**
+# - [ ] Deploy to web.del
+#
+# **Rollback**
+# - [ ] Deploy SHA to web.del
+source ./github_common
+endpoint="https://api.github.com/repos/$BASE_ACCOUNT/$BASE_REPO/issues/$ISSUE_NUMBER/labels"
+LABEL_CHANGE_JSON=`curl --silent -H "Accept: application/json" --data-binary '["RFR"]' "$endpoint?access_token=$GITHUB_TOKEN"`
+echo "set label 'RFR' to issue #$ISSUE_NUMBER"
